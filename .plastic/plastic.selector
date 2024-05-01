@@ -1,0 +1,4 @@
+repository "RecycleMania@AndGeo99@cloud"
+  path "/"
+    br "/main"
+    co "/main"
