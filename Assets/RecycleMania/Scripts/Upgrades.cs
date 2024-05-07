@@ -25,8 +25,8 @@ public class Upgrades
         switch (upgradeType) {
             default:
             case UpgradeType.CarryingCapacity:  return 10;
-            case UpgradeType.MovementSpeed:     return 0.5f;
-            case UpgradeType.PickupRange:       return 0.5f;
+            case UpgradeType.MovementSpeed:     return 2f;
+            case UpgradeType.PickupRange:       return 1f;
         }
     }
 
@@ -34,7 +34,7 @@ public class Upgrades
         switch (upgradeType) {
             default:
             case UpgradeType.CarryingCapacity:  return 200;
-            case UpgradeType.MovementSpeed:     return 10f;
+            case UpgradeType.MovementSpeed:     return 15f;
             case UpgradeType.PickupRange:       return 5f;
         }
     }

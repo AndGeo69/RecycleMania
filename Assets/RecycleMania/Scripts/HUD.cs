@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Timers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HUD : MonoBehaviour {
@@ -18,6 +19,7 @@ public class HUD : MonoBehaviour {
 	void Start () {
         Inventory.ItemAdded += InventoryScript_ItemAdded;
         Inventory.ItemRemoved += Inventory_ItemRemoved;
+        Inventory.GameWon += Game_Won;
 	}
 
     public void UpdatePanel(GameObject panel, String textPanelName, int amount) {
@@ -35,40 +37,12 @@ public class HUD : MonoBehaviour {
 
     private void InventoryScript_ItemAdded(object sender, InventoryEventArgs e)
     {
-
         OpenMessagePanelTimed("Inventory full, upgrade to increase capacity");
+    }
 
-        // Transform inventoryPanel = transform.Find("InventoryPanel");
-        // int index = -1;
-        // foreach (Transform slot in inventoryPanel)
-        // {
-        //     index++;
-
-        //     // Border... Image
-        //     Transform imageTransform = slot.GetChild(0).GetChild(0);
-        //     Transform textTransform = slot.GetChild(0).GetChild(1);
-        //     Image image = imageTransform.GetComponent<Image>();
-        //     Text txtCount = textTransform.GetComponent<Text>();
-        //     // ItemDragHandler itemDragHandler = imageTransform.GetComponent<ItemDragHandler>();
-
-        //     if(index == e.Item.Slot.Id)
-        //     {
-        //         image.enabled = true;
-        //         image.sprite = e.Item.Image;
-
-        //         int itemCount = e.Item.Slot.Count;
-        //         if (itemCount > 1)
-        //             txtCount.text = itemCount.ToString();
-        //         else
-        //             txtCount.text = "";
-                         
-
-        //         // Store a reference to the item
-        //         // itemDragHandler.Item = e.Item;
-
-        //         break;
-        //     }
-        // }
+    private void Game_Won(object sender, EventArgs e) {
+        SceneManager.LoadScene("GameWonScene");
+        Debug.Log("Game Won!!");
     }
 
     private void Inventory_ItemRemoved(object sender, InventoryEventArgs e)
@@ -162,15 +136,20 @@ public class HUD : MonoBehaviour {
     }
 
     public void OpenMessagePanelTimed(String text, float seconds) {
+        if (isOpenedTimed) { return;}
+        
         OpenMessagePanel(text);
 
         StartCoroutine(CloseAfterSeconds(seconds));
     }
 
+    private bool isOpenedTimed = false;
     IEnumerator CloseAfterSeconds(float seconds)
     {
+        isOpenedTimed = true;
         yield return new WaitForSeconds(seconds);
         CloseMessagePanel();
+        isOpenedTimed = false;
     }
 
     public void OpenMessagePanel(string text)

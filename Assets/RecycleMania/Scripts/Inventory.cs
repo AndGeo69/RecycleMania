@@ -12,6 +12,14 @@ public class Inventory : MonoBehaviour
         return capacity;
     }
 
+    [SerializeField] 
+    private int RecycledTrashRequiredToWin = 500;
+
+    private int TotalRecycledTrash;
+
+    public int getTotalRecycledTrash() {return TotalRecycledTrash;}
+    public int getRecycledTrashRequiredToWin() {return RecycledTrashRequiredToWin;}
+
     public void IncreaseCapacity(int amount) {
         capacity += amount;
     }
@@ -25,7 +33,7 @@ public class Inventory : MonoBehaviour
 
     public event EventHandler<InventoryEventArgs> ItemAdded;
     public event EventHandler<InventoryEventArgs> ItemRemoved;
-    // public event EventHandler<InventoryEventArgs> ItemUsed;
+    public event EventHandler<EventArgs> GameWon;
 
     public Inventory()
     {
@@ -33,26 +41,13 @@ public class Inventory : MonoBehaviour
         {
             mSlots.Add(new InventorySlot(i));
         }
+        TotalRecycledTrash = 0;
     }
 
-    private InventorySlot FindStackableSlot(InventoryItemBase item)
-    {
-        foreach (InventorySlot slot in mSlots)
-        {
-            if (slot.IsStackable(item))
-                return slot;
+    private void CheckWinCondition() {
+        if (getRecycledTrashRequiredToWin() >= getTotalRecycledTrash()) {
+            GameWon(this, new EventArgs());
         }
-        return null;
-    }
-
-    private InventorySlot FindNextEmptySlot()
-    {
-        foreach (InventorySlot slot in mSlots)
-        {
-            if (slot.IsEmpty)
-                return slot;
-        }
-        return null;
     }
 
     public bool AddItem(InventoryItemBase item)
@@ -86,9 +81,11 @@ public class Inventory : MonoBehaviour
 
         }
     }
-
+    
     public int RemoveAllItems() {
         int itemCount = allItems.Count;
+        TotalRecycledTrash += itemCount;
+        CheckWinCondition();
 
         if (itemCount > 0) {
             allItems.Clear();

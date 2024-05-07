@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour, IShopCustomer
 
     public float Speed = 7.0f;
 
-    public float RotationSpeed = 400.0f;
+    public float RotationSpeed = 500.0f;
 
     public Inventory Inventory;
 

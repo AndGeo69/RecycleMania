@@ -11,9 +11,19 @@ public class MessMaker : MonoBehaviour
     List<GameObject> Objects = new List<GameObject>();
     bool active = false;
 
-    private void OnTriggerEnter(Collider other)
+
+    private void Start() {
+        StartCoroutine(CreateMessAfterSeconds(4));
+    }
+
+    IEnumerator CreateMessAfterSeconds(float seconds)
     {
-        if (other.gameObject == messMakerPoole.Player && !active)
+        yield return new WaitForSeconds(seconds);
+        CreateMess();
+    }
+
+    private void CreateMess() {
+        if (!active)
         {
             active = true;
             Objects = new List<GameObject>();
@@ -24,7 +34,8 @@ public class MessMaker : MonoBehaviour
                 
                 float x = transform.position.x + UnityEngine.Random.Range(-Range, Range + 1);
                 float z = transform.position.z + UnityEngine.Random.Range(-Range, Range + 1);
-                Objects.Add(messMakerPoole.TakeFromPoole(which, new Vector3(x, transform.position.y, z)));
+                GameObject gameObject = messMakerPoole.TakeFromPoole(which, new Vector3(x, transform.position.y, z));
+                Objects.Add(gameObject);
 
                 Quaternion rotatation = new Quaternion();
 
@@ -46,6 +57,42 @@ public class MessMaker : MonoBehaviour
             }
         }
     }
+
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.gameObject == messMakerPoole.Player && !active)
+    //     {
+    //         active = true;
+    //         Objects = new List<GameObject>();
+
+    //         for (int i = 0; i < Number; i++)
+    //         {
+    //             int which = UnityEngine.Random.Range(0, messMakerPoole.PooledObjects.Count);
+                
+    //             float x = transform.position.x + UnityEngine.Random.Range(-Range, Range + 1);
+    //             float z = transform.position.z + UnityEngine.Random.Range(-Range, Range + 1);
+    //             Objects.Add(messMakerPoole.TakeFromPoole(which, new Vector3(x, transform.position.y, z)));
+
+    //             Quaternion rotatation = new Quaternion();
+
+    //             if (messMakerPoole.RandomiseXRotation)
+    //                 rotatation.x = UnityEngine.Random.Range(0, 360);
+    //             if (messMakerPoole.RandomiseYRotation)
+    //                 rotatation.y = UnityEngine.Random.Range(0, 360);
+    //             if (messMakerPoole.RandomiseZRotation)
+    //                 rotatation.z = UnityEngine.Random.Range(0, 360);
+
+    //             Objects[i].transform.rotation = rotatation;
+
+    //             if (messMakerPoole.RandomiseScale)
+    //             {
+    //                 float scale = UnityEngine.Random.Range(messMakerPoole.MinimumScale, messMakerPoole.MaximumScale);
+    //                 Objects[i].transform.localScale = new Vector3(scale, scale, scale);
+    //             }
+
+    //         }
+    //     }
+    // }
 
     private void OnTriggerExit(Collider other)
     {

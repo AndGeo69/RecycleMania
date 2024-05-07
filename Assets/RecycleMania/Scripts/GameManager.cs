@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
@@ -21,6 +22,28 @@ public class GameManager : MonoBehaviour {
 
         // Dont destroy on reloading the scene
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Update() {
+        // DestroyFallingObjects();
+    }
+
+    int count = 0;
+    private void DestroyFallingObjects() {
+        Rigidbody[] rigidbodies = FindObjectsOfType<Rigidbody>();
+
+            // Iterate through each Rigidbody
+        foreach (Rigidbody rb in rigidbodies)
+        {
+            // Check if the object's Y position is below the threshold
+            if (rb.transform.position.y < -20f)
+            {
+                // Remove the object
+                Destroy(rb.gameObject);
+                count++;
+                Debug.Log("Destroyed item count " + count);
+            }
+        }
     }
 
     public PlayerController Player;

@@ -34,11 +34,7 @@ public class MessMakerPoole : MonoBehaviour
                 gameObject.SetActive(true);
 
                 //check rigidbody existence and add if necesery
-                Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-                if (rb == null)
-                {
-                    rb = gameObject.AddComponent<Rigidbody>();
-                }
+                addRigidIfNeeded(gameObject);
                 
                 return gameObject;
             }
@@ -50,9 +46,17 @@ public class MessMakerPoole : MonoBehaviour
         newInstance.layer = Layer;
         newInstance.transform.position = Pos;
         newInstance.SetActive(true);
+        addRigidIfNeeded(newInstance);
         return newInstance;
     }// end TakeFromPoole
 
+    private void addRigidIfNeeded(GameObject gameObject) {
+        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+            if (rb == null)
+            {
+                rb = gameObject.AddComponent<Rigidbody>();
+            }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -90,6 +94,7 @@ public class MessMakerPoole : MonoBehaviour
                 foreach (Transform child in newInstance.transform)
                     child.gameObject.layer = Layer;
 
+                addRigidIfNeeded(newInstance);
                 newInstance.SetActive(false);
                 Poole[i].Add(newInstance);
             } // end for j
