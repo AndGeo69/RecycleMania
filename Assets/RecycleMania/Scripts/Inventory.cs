@@ -57,41 +57,19 @@ public class Inventory : MonoBehaviour
 
     public bool AddItem(InventoryItemBase item)
     {
-        if (allItems.Count < capacity) {
+        if (CanAddMoreItems()) {
             allItems.Add(item);
             return true;
         } else {
             ItemAdded(this, new InventoryEventArgs(item));
             return false;
         }
-
-
-        // InventorySlot freeSlot = FindStackableSlot(item);
-        // if (freeSlot == null)
-        // {
-        //     freeSlot = FindNextEmptySlot();
-        // }
-        // if (freeSlot != null)
-        // {
-        //     freeSlot.AddItem(item);
-
-        //     if (ItemAdded != null)
-        //     {
-        //         ItemAdded(this, new InventoryEventArgs(item));
-        //     }
-
-        // }
     }
 
-    // internal void UseItem(InventoryItemBase item)
-    // {
-    //     if (ItemUsed != null)
-    //     {
-    //         ItemUsed(this, new InventoryEventArgs(item));
-    //     }
-
-    //     item.OnUse();
-    // }
+    public bool CanAddMoreItems() {
+        return allItems.Count < capacity;
+         
+    }
 
     public void RemoveItem(InventoryItemBase item)
     {

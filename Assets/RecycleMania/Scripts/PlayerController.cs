@@ -40,9 +40,9 @@ public class PlayerController : MonoBehaviour, IShopCustomer
 
     #region Public Members
 
-    public float Speed = 5.0f;
+    public float Speed = 7.0f;
 
-    public float RotationSpeed = 240.0f;
+    public float RotationSpeed = 400.0f;
 
     public Inventory Inventory;
 
@@ -404,6 +404,10 @@ public class PlayerController : MonoBehaviour, IShopCustomer
     {
         if (mIsControlEnabled)
         {
+            if (itemsInRange.Count > 0 && Inventory.CanAddMoreItems()) {
+                Hud.OpenMessagePanel(itemsInRange[0]);
+            }
+
             if (Input.GetKeyDown(KeyCode.F))
             {
                 InteractableItemBase itemBase = GetClosestItem(itemsInRange);
@@ -496,7 +500,6 @@ public class PlayerController : MonoBehaviour, IShopCustomer
 
                     if (item is InventoryItemBase)
                     {
-                        InventoryItemBase inventoryItem = item as InventoryItemBase;
                         if (Inventory.AddItem(item))
                         {
                             item.OnPickup(Hud); //add sound fx onpickup and particles
@@ -504,39 +507,12 @@ public class PlayerController : MonoBehaviour, IShopCustomer
                             IncreaseTrashCount(1);
                             Hud.UpdateTrash(trashCount);
                             itemsInRange.Remove(item);
-                            // Hud.CloseMessagePanel();
-                            // mInteractItem = null;
                         }
-
                     }
                 }
             }
         }
-
-
-        // if (mInteractItem != null)
-        // {
-        //     mInteractItem.OnInteract();
-
-        //     if (mInteractItem is InventoryItemBase)
-        //     {
-        //         InventoryItemBase inventoryItem = mInteractItem as InventoryItemBase;
-        //         if (Inventory.AddItem(inventoryItem)) {
-        //             inventoryItem.OnPickup(Hud); //add sound fx onpickup and particles
-
-        //             IncreaseTrashCount(1);
-        //             Hud.UpdateTrash(trashCount);
-
-        //             // Hud.CloseMessagePanel();
-        //             mInteractItem = null;
-        //         }
-                
-        //     }
-        // }
     }
-
-    private InteractableItemBase mInteractItem = null;
-
     
     private void OnTriggerEnter(Collider other)
     {
@@ -545,25 +521,12 @@ public class PlayerController : MonoBehaviour, IShopCustomer
 
     private void TryInteraction(Collider other)
     {
-        InteractableItemBase item = other.GetComponent<InteractableItemBase>();
-
         List<InteractableItemBase> itemsAroundPlayer = other.GetComponents<InteractableItemBase>().ToList();
 
         if (itemsAroundPlayer.Count > 0) {
             Hud.OpenMessagePanel(itemsAroundPlayer[0]);
             itemsInRange.Add(GetClosestItem(itemsAroundPlayer));
         }
-
-
-        // if (item != null)
-        // {
-        //     if (item.CanInteract(other))
-        //     {
-        //         mInteractItem = item;
-
-        //         Hud.OpenMessagePanel(mInteractItem);
-        //     }
-        // }
     }
 
     private void OnTriggerExit(Collider other)
