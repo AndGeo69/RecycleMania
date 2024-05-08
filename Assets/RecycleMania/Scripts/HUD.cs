@@ -14,6 +14,7 @@ public class HUD : MonoBehaviour {
     public GameObject trashPanel;
 
     public GameObject MessagePanel;
+    public GameObject Info;
 
 	// Use this for initialization
 	void Start () {
@@ -136,7 +137,7 @@ public class HUD : MonoBehaviour {
     }
 
     public void OpenMessagePanelTimed(String text, float seconds) {
-        if (isOpenedTimed) { return;}
+        if (isOpenedTimed) {return;}
         
         OpenMessagePanel(text);
 
@@ -168,5 +169,10 @@ public class HUD : MonoBehaviour {
         MessagePanel.SetActive(false);
 
         mIsMessagePanelOpened = false;
+    }
+
+    public static explicit operator HUD(GameObject v)
+    {
+        throw new NotImplementedException();
     }
 }

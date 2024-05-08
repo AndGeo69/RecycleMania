@@ -34,8 +34,7 @@ public class MessMaker : MonoBehaviour
                 
                 float x = transform.position.x + UnityEngine.Random.Range(-Range, Range + 1);
                 float z = transform.position.z + UnityEngine.Random.Range(-Range, Range + 1);
-                GameObject gameObject = messMakerPoole.TakeFromPoole(which, new Vector3(x, transform.position.y, z));
-                Objects.Add(gameObject);
+                Objects.Add(messMakerPoole.TakeFromPoole(which, new Vector3(x, transform.position.y, z)));
 
                 Quaternion rotatation = new Quaternion();
 

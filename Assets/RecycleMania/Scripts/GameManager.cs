@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Update() {
-        // DestroyFallingObjects();
+        DestroyFallingObjects();
     }
 
     int count = 0;

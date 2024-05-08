@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class MessMakerPoole : MonoBehaviour
@@ -55,7 +56,10 @@ public class MessMakerPoole : MonoBehaviour
             if (rb == null)
             {
                 rb = gameObject.AddComponent<Rigidbody>();
+                
             }
+            rb.drag = 1f;
+            // rb.maxDepenetrationVelocity = 100;
     }
 
     // Start is called before the first frame update

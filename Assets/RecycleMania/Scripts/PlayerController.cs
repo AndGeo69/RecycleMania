@@ -2,14 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Palmmedia.ReportGenerator.Core.Parser.Analysis;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour, IShopCustomer
 {
@@ -59,7 +54,7 @@ public class PlayerController : MonoBehaviour, IShopCustomer
 
     [Header("Trash collected")]
     public int trashCount = 0;
-
+    public RecyclingFactsManager recyclingFactsManager;
     public List<InteractableItemBase> itemsInRange = new List<InteractableItemBase>();
 
 
@@ -485,6 +480,7 @@ public class PlayerController : MonoBehaviour, IShopCustomer
         }
     }
 
+
     public void InteractWithItem() //called by animator
     {
         List<InteractableItemBase> items = itemsInRange;
@@ -507,6 +503,9 @@ public class PlayerController : MonoBehaviour, IShopCustomer
                             IncreaseTrashCount(1);
                             Hud.UpdateTrash(trashCount);
                             itemsInRange.Remove(item);
+
+                            
+                            recyclingFactsManager.showRandomFact();
                         }
                     }
                 }
