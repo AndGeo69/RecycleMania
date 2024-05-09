@@ -13,7 +13,7 @@ public class MessMaker : MonoBehaviour
 
 
     private void Start() {
-        StartCoroutine(CreateMessAfterSeconds(4));
+        StartCoroutine(CreateMessAfterSeconds(2));
     }
 
     IEnumerator CreateMessAfterSeconds(float seconds)

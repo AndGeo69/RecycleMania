@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour {
         DestroyFallingObjects();
     }
 
-    int count = 0;
     private void DestroyFallingObjects() {
         Rigidbody[] rigidbodies = FindObjectsOfType<Rigidbody>();
 
@@ -40,8 +39,6 @@ public class GameManager : MonoBehaviour {
             {
                 // Remove the object
                 Destroy(rb.gameObject);
-                count++;
-                Debug.Log("Destroyed item count " + count);
             }
         }
     }

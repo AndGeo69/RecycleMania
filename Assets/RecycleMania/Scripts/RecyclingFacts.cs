@@ -1,13 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public static class RecyclingFacts
 {
     public static string[] Facts = new string[]
     {
-        "Recycling one aluminum can saves enough energy to run a TV for three hours.",
-        "Glass can be recycled endlessly without losing quality or purity.",
         "Recycling one ton of paper saves 17 trees, 7,000 gallons of water, and 463 gallons of oil.",
         "It takes 500 years for a plastic bottle to decompose in a landfill.",
         "Recycling plastic saves twice as much energy as burning it in an incinerator.",
@@ -18,6 +12,8 @@ public static class RecyclingFacts
         "Over 75% of waste is recyclable, but only 30% is actually recycled.",
         "Recycling reduces greenhouse gas emissions, which contribute to climate change.",
         "The energy saved from recycling one glass bottle can power a light bulb for four hours.",
+        "Recycling one aluminum can saves enough energy to run a TV for three hours.",
+        "Glass can be recycled endlessly without losing quality or purity.",
         "The average person generates over 4 pounds of trash every day.",
         "Recycling aluminum saves 95% of the energy needed to make new aluminum from raw materials.",
         "The amount of wood and paper we throw away is enough to heat 50 million homes for 20 years.",
@@ -25,7 +21,35 @@ public static class RecyclingFacts
         "The average person in the United States generates more than 1,600 pounds of waste per year.",
         "Recycling one ton of plastic saves the equivalent of 1,000 to 2,000 gallons of gasoline.",
         "Every minute, one garbage truck of plastic is dumped into the ocean.",
-        "Recycling helps conserve natural resources and reduce pollution."
+        "Recycling helps conserve natural resources and reduce pollution.",
+        "Americans throw away enough aluminum to rebuild our entire commercial air fleet every three months.",
+        "Over 40% of all bottled water sold in the U.S. is just tap water in a bottle.",
+        "Plastic bags and other plastic waste can take 20 years or more to decompose.",
+        "Americans use 100 billion plastic bags per year, which requires 12 million barrels of oil to produce.",
+        "Recycling one ton of plastic saves 7.4 cubic yards of landfill space.",
+        "Recycling one glass bottle saves enough energy to light a 100-watt light bulb for four hours.",
+        "Americans throw away 2.5 million plastic bottles every hour.",
+        "Every month, we throw out enough glass bottles and jars to fill up a giant skyscraper.",
+        "Recycling paper reduces greenhouse gas emissions by one ton for every 20 cubic yards of paper recycled.",
+        "If every American recycled just one-tenth of their newspapers, we could save about 25 million trees each year.",
+        "Recycling one ton of cardboard saves 9 cubic yards of landfill space.",
+        "The energy saved from recycling one glass bottle can power a computer for 30 minutes.",
+        "Recycling one ton of steel saves 2,500 pounds of iron ore, 1,400 pounds of coal, and 120 pounds of limestone.",
+        "Americans throw away enough iron and steel to continuously supply all the nation's automakers.",
+        "Recycling one ton of aluminum saves 14,000 kilowatt-hours of energy, enough to power the average U.S. home for 1.5 months.",
+        "Enough energy is saved by recycling one glass bottle to power a 100-watt light bulb for four hours.",
+        "Recycling one ton of plastic saves 7,200 gallons of gasoline.",
+        "Americans use 2.5 million plastic bottles every hour, or 60 million a day.",
+        "The amount of wood and paper thrown away each year is enough to heat 50 million homes for 20 years.",
+        "Recycling one ton of cardboard saves 46 gallons of oil.",
+        "Americans throw away enough office paper each year to build a 12-foot high wall of paper from New York to Los Angeles.",
+        "Recycling one ton of glass saves the equivalent of nine gallons of fuel oil.",
+        "Recycling one ton of aluminum saves 10 cubic yards of landfill space.",
+        "Recycling one ton of paper saves 17 trees, which can absorb 250 pounds of carbon dioxide per year.",
+        "Recycling one ton of cardboard saves 400 gallons of oil.",
+        "Recycling one ton of glass saves the equivalent of 1.2 barrels of oil.",
+        "Recycling one ton of plastic saves 30 cubic yards of landfill space.",
+        "Recycling one ton of steel saves 11 cubic yards of landfill space.",
+
     };
 }
-
