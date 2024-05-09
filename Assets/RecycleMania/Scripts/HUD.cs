@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Timers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,6 +15,9 @@ public class HUD : MonoBehaviour {
     public GameObject trashPanel;
 
     public GameObject MessagePanel;
+    
+    public GameObject RecycledTrashText;
+
     public GameObject Info;
 
 	// Use this for initialization
@@ -21,6 +25,7 @@ public class HUD : MonoBehaviour {
         Inventory.ItemAdded += InventoryScript_ItemAdded;
         Inventory.ItemRemoved += Inventory_ItemRemoved;
         Inventory.GameWon += Game_Won;
+        UpdateOutOfTrashText(Inventory.getRecycledTrashRequiredToWin());
 	}
 
     public void UpdatePanel(GameObject panel, String textPanelName, int amount) {
@@ -34,6 +39,19 @@ public class HUD : MonoBehaviour {
 
     public void UpdateTrash(int amount) {
         UpdatePanel(trashPanel, "TrashText", amount);
+    }
+
+    public void UpdateRecycledTrash(int amount) {
+        UpdateTextMeshProUGUIPanel(RecycledTrashText, "RecycledTrashValueText", amount);
+    }
+
+    public void UpdateOutOfTrashText(int amount) {
+        UpdateTextMeshProUGUIPanel(RecycledTrashText, "OutOfTrashText", amount);
+    }
+
+    public void UpdateTextMeshProUGUIPanel(GameObject panel, String textPanelName, int amount) {
+        TextMeshProUGUI currencyText = panel.transform.Find(textPanelName).GetComponent<TextMeshProUGUI>();
+        currencyText.text = amount.ToString();
     }
 
     private void InventoryScript_ItemAdded(object sender, InventoryEventArgs e)

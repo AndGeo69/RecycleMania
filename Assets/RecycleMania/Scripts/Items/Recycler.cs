@@ -9,6 +9,7 @@ public class Recycler : MonoBehaviour
     public void SellAllItems(PlayerController player) {
         player.IncreaseCurrency(player.Inventory.RemoveAllItems() * 10);
         hud.UpdateCurrency(player.currency);
+        hud.UpdateRecycledTrash(player.Inventory.getTotalRecycledTrash());
         
         player.ResetTrashCount();
         hud.UpdateTrash(player.trashCount);
