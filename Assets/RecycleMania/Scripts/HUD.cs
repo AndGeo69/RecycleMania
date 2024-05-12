@@ -20,6 +20,8 @@ public class HUD : MonoBehaviour {
 
     public GameObject Info;
 
+     public GameObject SortingPanel;
+
 	// Use this for initialization
 	void Start () {
         Inventory.ItemAdded += InventoryScript_ItemAdded;

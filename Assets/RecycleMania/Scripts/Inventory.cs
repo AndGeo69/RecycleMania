@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -50,6 +51,18 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public bool hasItems() {
+        return allItems.Count > 0;
+
+    }
+
+    public InventoryItemBase GetFirstInventoryItem() {
+        if (allItems.Count > 0) {
+            return allItems[0];
+        }
+        return null;
+    }
+
     public bool AddItem(InventoryItemBase item)
     {
         if (CanAddMoreItems()) {
@@ -92,12 +105,13 @@ public class Inventory : MonoBehaviour
         }
 
         return itemCount;
+    }
 
-        // if (mSlots.Count > 0) {
-        //     foreach (InventorySlot slot in mSlots) {               
-        //         itemCount += slot.RemoveStackItems();
-        //     }
-        // }
-        // return itemCount;
+    public int RemoveThisItem(InventoryItemBase thisItem) {
+        if (thisItem == null) { return 0; }
+
+        allItems.Remove(thisItem);
+
+        return 10;
     }
 }

@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour, IShopCustomer
     public RecyclingFactsManager recyclingFactsManager;
     public List<InteractableItemBase> itemsInRange = new List<InteractableItemBase>();
 
+    public bool canInteract = true;
 
     #endregion
 
@@ -86,6 +87,12 @@ public class PlayerController : MonoBehaviour, IShopCustomer
 
         sphereCollider = GetComponent<SphereCollider>();
         sphereCollider.radius = 1.3f;
+        
+
+        Transform StartingTextTransform = Hud.transform.Find("StartingText");
+        StartingTextTransform.gameObject.SetActive(true);
+
+        Hud.transform.Find("SortingPanel").gameObject.SetActive(false);
         
 
         // mHealthBar = Hud.transform.Find("Bars_Panel/HealthBar").GetComponent<HealthBar>();
@@ -397,7 +404,7 @@ public class PlayerController : MonoBehaviour, IShopCustomer
     // Update is called once per frame
     void Update()
     {
-        if (mIsControlEnabled)
+        if (mIsControlEnabled && canInteract)
         {
             if (itemsInRange.Count > 0 && Inventory.CanAddMoreItems()) {
                 Hud.OpenMessagePanel(itemsInRange[0]);

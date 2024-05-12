@@ -7,7 +7,12 @@ public enum EItemType
 {
     Default,
     Consumable,
-    Weapon
+    Weapon,
+    Plastic,
+    Glass,
+    Paper,
+    Aluminium,
+    Organic_Waste,
 }
 
 public class InteractableItemBase : MonoBehaviour, IInteractable
