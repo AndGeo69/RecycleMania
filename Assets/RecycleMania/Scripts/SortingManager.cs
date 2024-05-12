@@ -1,3 +1,4 @@
+using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class SortingManager : MonoBehaviour
     private bool hasInventoryItemSet = false;
     
     private InventoryItemBase currentItem;
+    private PlayerController player;
 
     private void Start() {
         
@@ -20,39 +22,53 @@ public class SortingManager : MonoBehaviour
         var sortingItemTransfom = sortingTransfom.Find("SortingItemTemplate");
         image = sortingItemTransfom.Find("SortingItemImage").GetComponent<Image>();
 
+        player = FindObjectOfType<PlayerController>();
+
         SetCorrectImage();
     }
 
     public void SetCorrectImage() {
         if (!hasInventoryItemSet) {
-            image.sprite = getImageFromType();
+            Sprite sprite = getImageFromType();
+            if (sprite == null) {
+                // no next item, should show a well done msg and close dialog.
+                hud.transform.Find("SortingPanel").gameObject.SetActive(false);
+                player.canInteract = true;
+                Debug.Log("no next item or image not found..");
+                return;
+            }
+            image.sprite = sprite;
             hasInventoryItemSet = true;
         }
     }
 
+    private void SetCurrentItem() {
+         currentItem = inventory.GetFirstInventoryItem();
+    }
+
     public Sprite getImageFromType() {
 
-        Sprite sprite;
-        currentItem = inventory.GetFirstInventoryItem();
+        Texture2D texture;
+        SetCurrentItem();
         if (currentItem == null) {
-            sprite = Resources.Load<Sprite>("I/mages/coin/star coin rotate 1.png");
+            return null;
         }
 
         EItemType type = currentItem.ItemType;
 
         if (type == EItemType.Default) {
-            sprite = Resources.Load<Sprite>("/Images/coin/star coin rotate 1.png");
+            texture = Resources.Load<Texture2D>("lead_money");
         }
 
-        sprite = type switch
+        texture = type switch
         {
-            EItemType.Glass => Resources.Load<Sprite>("/Images/glass-bottle"),
-            EItemType.Organic_Waste => Resources.Load<Sprite>("/Images/organic"),
-            EItemType.Aluminium => Resources.Load<Sprite>("/Images/drink-can"),
-            _ => Resources.Load<Sprite>("/Images/coin/star coin rotate 1"),
+            EItemType.Glass => Resources.Load<Texture2D>("glass-bottle"),
+            EItemType.Organic_Waste => Resources.Load<Texture2D>("organic"),
+            EItemType.Aluminium => Resources.Load<Texture2D>("drink-can"),
+            _ => Resources.Load<Texture2D>("leaf_money"),
         };
 
-        return sprite;
+        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);;
     }
 
     private KeyCode getKeyPerItemType() {
@@ -69,6 +85,8 @@ public class SortingManager : MonoBehaviour
     }
 
     public void HandleInput() {
+        SetCurrentItem();
+        SetCorrectImage();
         if (currentItem == null) {return;}
         
         if (getKeyPerItemType() == KeyCode.W) {
@@ -95,7 +113,7 @@ public class SortingManager : MonoBehaviour
     }
 
     public void SellThisItemAndReset() {
-        PlayerController player = FindObjectOfType<PlayerController>();
+
 
         player.IncreaseCurrency(player.Inventory.RemoveThisItem(currentItem));
         hud.UpdateCurrency(player.currency);

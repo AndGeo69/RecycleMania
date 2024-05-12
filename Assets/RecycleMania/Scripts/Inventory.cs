@@ -107,11 +107,22 @@ public class Inventory : MonoBehaviour
         return itemCount;
     }
 
-    public int RemoveThisItem(InventoryItemBase thisItem) {
-        if (thisItem == null) { return 0; }
+    public int RemoveThisItem(InventoryItemBase thisItem)
+    {
+        if (thisItem == null || !allItems.Contains(thisItem))
+        {
+            return 0;
+        }
 
-        allItems.Remove(thisItem);
+        for (int i = 0; i < allItems.Count; i++)
+        {
+            if (allItems[i] == thisItem)
+            {
+                allItems.RemoveAt(i);
+                return 10; // Return 10 if the item is successfully removed
+            }
+        }
 
-        return 10;
-    }
+        return 0; // Return 0 if the item is not found
+    }   
 }
