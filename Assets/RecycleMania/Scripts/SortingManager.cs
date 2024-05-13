@@ -98,14 +98,14 @@ public class SortingManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) ||
                      Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.Space)) {
-
+            SortingInfoPanel.gameObject.SetActive(false);
             if (Input.GetKeyDown(expectedKey)) {
                 SellThisItemAndReset();
             } else {
                 if (shakeEffect.TriggerShake()) {
                     SortingInfoPanel.gameObject.SetActive(true);
-                    SortingInfoPanel.Find("SortingInfo")
-                        .GetComponent<TextMeshPro>().text =
+                    var sortingInfoComp = SortingInfoPanel.Find("SortingInfo");
+                    sortingInfoComp.GetComponent<TMP_Text>().text =
                              currentItem.ItemType.ToString() + " items cannot be tossed to this trash bin!!";
                 }
                 Debug.Log("Wrong bin!");
