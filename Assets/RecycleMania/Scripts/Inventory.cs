@@ -118,6 +118,7 @@ public class Inventory : MonoBehaviour
         {
             if (allItems[i] == thisItem)
             {
+                TotalRecycledTrash++;
                 allItems.RemoveAt(i);
                 return 10; // Return 10 if the item is successfully removed
             }

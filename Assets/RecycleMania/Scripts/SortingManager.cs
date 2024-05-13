@@ -8,9 +8,10 @@ public class SortingManager : MonoBehaviour
     private HUD hud;
     private Image image;
     private bool hasInventoryItemSet = false;
-    
     private InventoryItemBase currentItem;
     private PlayerController player;
+
+    public ShakeEffect shakeEffect; // Reference to the ShakeEffect component attached to the UI GameObject
 
     private void Start() {
         
@@ -88,26 +89,15 @@ public class SortingManager : MonoBehaviour
         SetCorrectImage();
         if (currentItem == null) {return;}
         
-        if (getKeyPerItemType() == KeyCode.W) {
-            // show wrong message, loose hp or smth
-            Debug.Log("Wrong bin !");
-            return;
-        }
+        KeyCode expectedKey = getKeyPerItemType();
 
-        if (getKeyPerItemType() == KeyCode.Q) {
-            // show wrong message, loose hp or smth
-            Debug.Log("No current item !");
-            return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.A) && getKeyPerItemType() == KeyCode.A) {
-            SellThisItemAndReset();
-        } else if (Input.GetKeyDown(KeyCode.S)  && getKeyPerItemType() == KeyCode.S) {
-            SellThisItemAndReset();
-        } else if (Input.GetKeyDown(KeyCode.D)  && getKeyPerItemType() == KeyCode.D) {
-            SellThisItemAndReset();
-        } else if (Input.GetKeyDown(KeyCode.Space)  && getKeyPerItemType() == KeyCode.Space) {
-            SellThisItemAndReset();
+        if (Input.anyKeyDown) {
+            if (Input.GetKeyDown(expectedKey)) {
+                SellThisItemAndReset();
+            } else {
+                shakeEffect.TriggerShake();
+                Debug.Log("Wrong bin!");
+            }
         }
     }
 

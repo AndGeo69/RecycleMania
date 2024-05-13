@@ -39,7 +39,7 @@ public class Player_Follow : MonoBehaviour
             if (!RotateMiddleMouseButton)
                 return true;
 
-            if (RotateMiddleMouseButton && Input.GetMouseButton(2))
+            if (RotateMiddleMouseButton && Input.GetMouseButton(1))
                 return true;
 
             return false;
