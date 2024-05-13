@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class SortingManager : MonoBehaviour
     private bool hasInventoryItemSet = false;
     private InventoryItemBase currentItem;
     private PlayerController player;
+    private Transform SortingInfoPanel;
 
     public ShakeEffect shakeEffect; // Reference to the ShakeEffect component attached to the UI GameObject
 
@@ -20,6 +22,9 @@ public class SortingManager : MonoBehaviour
         
         var sortingTransfom = hud.transform.Find("SortingPanel");
         var sortingItemTransfom = sortingTransfom.Find("SortingItemTemplate");
+
+        SortingInfoPanel = sortingTransfom.Find("SortingInfoPanel");
+
         image = sortingItemTransfom.Find("SortingItemImage").GetComponent<Image>();
 
         player = FindObjectOfType<PlayerController>();
@@ -91,19 +96,24 @@ public class SortingManager : MonoBehaviour
         
         KeyCode expectedKey = getKeyPerItemType();
 
-        if (Input.anyKeyDown) {
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) ||
+                     Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.Space)) {
+
             if (Input.GetKeyDown(expectedKey)) {
                 SellThisItemAndReset();
             } else {
-                shakeEffect.TriggerShake();
+                if (shakeEffect.TriggerShake()) {
+                    SortingInfoPanel.gameObject.SetActive(true);
+                    SortingInfoPanel.Find("SortingInfo")
+                        .GetComponent<TextMeshPro>().text =
+                             currentItem.ItemType.ToString() + " items cannot be tossed to this trash bin!!";
+                }
                 Debug.Log("Wrong bin!");
             }
         }
     }
 
     public void SellThisItemAndReset() {
-
-
         player.IncreaseCurrency(player.Inventory.RemoveThisItem(currentItem));
         hud.UpdateCurrency(player.currency);
         hud.UpdateRecycledTrash(player.Inventory.getTotalRecycledTrash());

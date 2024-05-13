@@ -15,9 +15,20 @@ public class ShakeEffect : MonoBehaviour
         originalPosition = objectToShake.localPosition;
     }
 
-    public void TriggerShake()
+    private bool shakeEnded = true;
+
+    public bool TriggerShake()
     {
-        StartCoroutine(Shake());
+        if (shakeEnded)
+        {
+            shakeEnded = false;
+            StartCoroutine(Shake());
+            return true; // Shake effect has started
+        }
+        else
+        {
+            return false; // Shake effect is still in progress
+        }
     }
 
     IEnumerator Shake()
@@ -41,5 +52,9 @@ public class ShakeEffect : MonoBehaviour
 
         // Reset the object to its original position
         objectToShake.localPosition = originalPosition;
+
+        // Shake effect has ended
+        shakeEnded = true;
     }
+
 }

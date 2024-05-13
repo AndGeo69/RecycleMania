@@ -21,7 +21,7 @@ public class Player_Follow : MonoBehaviour
 
     public float CameraPitchMin = 1.5f;
 
-    public float CameraPitchMax = 6.5f;
+    public float CameraPitchMax = 6f;
 
     // Use this for initialization
     void Start()
