@@ -63,6 +63,13 @@ public class Inventory : MonoBehaviour
         return null;
     }
 
+    public InventoryItemBase GetInventoryItem(int position) {
+        if (allItems.Count > position) {
+            return allItems[position];
+        }
+        return null;
+    }
+
     public bool AddItem(InventoryItemBase item)
     {
         if (CanAddMoreItems()) {

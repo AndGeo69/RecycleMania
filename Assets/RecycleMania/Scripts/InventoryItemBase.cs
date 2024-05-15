@@ -5,14 +5,14 @@ using UnityEngine;
 
 public enum EItemType
 {
+    Glass,
+    Aluminium,
+    Paper,
+    Organic_Waste,
+    Plastic,
     Default,
     Consumable,
     Weapon,
-    Plastic,
-    Glass,
-    Paper,
-    Aluminium,
-    Organic_Waste,
 }
 
 public class InteractableItemBase : MonoBehaviour, IInteractable
