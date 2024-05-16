@@ -16,8 +16,15 @@ public class SortingManager : MonoBehaviour
     private InventoryItemBase secondNextItem;
     private PlayerController player;
     private Transform SortingInfoPanel;
-    private Transform SortingInfoPanelNext;
+    private Transform SortingItemTemplate;
+    private Transform SortingItemTemplate1;
+    private Transform SortingItemTemplate2;
     private Transform SortingInfoPanelSecondNext;
+
+    private int totalFactoryHp;
+    public int currentFactoryHp;
+    private Transform sortingPanelTransfrom;
+    private bool isWorking;
 
     public ShakeEffect shakeEffect; // Reference to the ShakeEffect component attached to the UI GameObject
 
@@ -43,22 +50,22 @@ public class SortingManager : MonoBehaviour
             return;
         }
 
-        var sortingTransfom = hud.transform.Find("SortingPanel");
-        if (sortingTransfom == null)
+        sortingPanelTransfrom = hud.transform.Find("SortingPanel");
+        if (sortingPanelTransfrom == null)
         {
             Debug.LogError("SortingPanel not found in HUD!");
             return;
         }
-        SortingInfoPanel = sortingTransfom.Find("SortingInfoPanel");
+        SortingInfoPanel = sortingPanelTransfrom.Find("SortingInfoPanel");
 
-        var sortingItemTransfom = sortingTransfom.Find("SortingItemTemplate");
-        image = sortingItemTransfom.Find("SortingItemImage").GetComponent<Image>();
+        SortingItemTemplate = sortingPanelTransfrom.Find("SortingItemTemplate");
+        image = SortingItemTemplate.Find("SortingItemImage").GetComponent<Image>();
 
-        var sortingItemTransfomNext = sortingTransfom.Find("SortingItemTemplatePre1");
-        imageNext = sortingItemTransfomNext.Find("SortingItemImage").GetComponent<Image>();
+        SortingItemTemplate1 = sortingPanelTransfrom.Find("SortingItemTemplatePre1");
+        imageNext = SortingItemTemplate1.Find("SortingItemImage").GetComponent<Image>();
 
-        var sortingItemTransfomSecondNext = sortingTransfom.Find("SortingItemTemplatePre2");
-        imageSecondNext = sortingItemTransfomSecondNext.Find("SortingItemImage").GetComponent<Image>();
+        SortingItemTemplate2 = sortingPanelTransfrom.Find("SortingItemTemplatePre2");
+        imageSecondNext = SortingItemTemplate2.Find("SortingItemImage").GetComponent<Image>();
 
         player = FindObjectOfType<PlayerController>();
         if (player == null)
@@ -66,6 +73,16 @@ public class SortingManager : MonoBehaviour
             Debug.LogError("PlayerController reference not found!");
             return;
         }
+
+        totalFactoryHp = currentFactoryHp =  10;     
+        isWorking = true;  
+    }
+
+
+    private void updateFactoryHp(int amount) {
+        currentFactoryHp += amount;
+        var sortingHpPanel = sortingPanelTransfrom.Find("HPPanel");
+        sortingHpPanel.Find("HPText").GetComponent<TMP_Text>().text = currentFactoryHp.ToString();
     }
 
     private void SetCurrentItem()
@@ -75,9 +92,21 @@ public class SortingManager : MonoBehaviour
         secondNextItem = inventory.GetInventoryItem(2);
     }
 
+    private void disablePanelsIfNecesery() { // must be called afeter setcurrentitem()
+        if (nextItem == null) {
+            SortingItemTemplate1.gameObject.SetActive(false);
+        }
+
+        if (secondNextItem == null) {
+            SortingItemTemplate2.gameObject.SetActive(false);
+        }
+    }
+
     public void SetCorrectImage()
     {
         SetCurrentItem();
+
+        disablePanelsIfNecesery();
         SetImage(currentItem, image);
         SetImage(nextItem, imageNext);
         SetImage(secondNextItem, imageSecondNext);
@@ -160,6 +189,7 @@ public class SortingManager : MonoBehaviour
                     sortingInfoComp.GetComponent<TMP_Text>().text =
                         item.ItemType.ToString() + " items cannot be tossed to this trash bin!!";
                 }
+                updateFactoryHp(-1);
                 Debug.Log("Wrong bin!");
             }
         }
@@ -167,10 +197,31 @@ public class SortingManager : MonoBehaviour
 
     public void HandleInput()
     {
-        SetCurrentItem();
-        SetCorrectImage();
-        HandleItems(currentItem);
-        DisablePanel();
+        checkFactoryHp();
+        if (isWorking) {
+            SetCurrentItem();
+            SetCorrectImage();
+            HandleItems(currentItem);
+            DisablePanel();
+        }
+    }
+
+    private void checkFactoryHp() {
+        if (currentFactoryHp <= 0) {
+            setPanelsActive(false);
+            isWorking = false;
+        } else {
+            setPanelsActive(true);
+            isWorking = true;
+        }
+    }
+
+    private void setPanelsActive(bool value) {
+        SortingItemTemplate.gameObject.SetActive(value);
+        SortingItemTemplate1.gameObject.SetActive(value);
+        SortingItemTemplate2.gameObject.SetActive(value);
+        sortingPanelTransfrom.Find("SortingHelpContent").gameObject.SetActive(value);
+        sortingPanelTransfrom.Find("FactoryDownText").gameObject.SetActive(!value);
     }
 
     public void DisablePanel()
