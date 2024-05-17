@@ -95,10 +95,14 @@ public class SortingManager : MonoBehaviour
     private void disablePanelsIfNecesery() { // must be called afeter setcurrentitem()
         if (nextItem == null) {
             SortingItemTemplate1.gameObject.SetActive(false);
+        } else {
+            SortingItemTemplate1.gameObject.SetActive(true);
         }
 
         if (secondNextItem == null) {
             SortingItemTemplate2.gameObject.SetActive(false);
+        } else {
+            SortingItemTemplate2.gameObject.SetActive(true);
         }
     }
 
@@ -138,6 +142,12 @@ public class SortingManager : MonoBehaviour
             case EItemType.Aluminium:
                 texture = Resources.Load<Texture2D>("drink-can");
                 break;
+            case EItemType.Plastic:
+                texture = Resources.Load<Texture2D>("plastic-bottle");
+                break;
+            case EItemType.Paper:
+                texture = Resources.Load<Texture2D>("paper-icon");
+                break;
             default:
                 texture = Resources.Load<Texture2D>("recycling-menu");
                 break;
@@ -159,8 +169,12 @@ public class SortingManager : MonoBehaviour
                 return KeyCode.Space;
             case EItemType.Aluminium:
                 return KeyCode.S;
-            default:
+            case EItemType.Plastic:
                 return KeyCode.W;
+            case EItemType.Paper:
+                return KeyCode.D;
+            default:
+                return KeyCode.Break;
         }
     }
 
@@ -171,7 +185,7 @@ public class SortingManager : MonoBehaviour
 
         KeyCode expectedKey = GetKeyPerItemType(item);
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) ||
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.W) || 
             Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.Space))
         {
             SortingInfoPanel.gameObject.SetActive(false);
@@ -195,9 +209,16 @@ public class SortingManager : MonoBehaviour
         }
     }
 
+    private IEnumerator DisablePanelWithDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+        hud.transform.Find("SortingPanel").gameObject.SetActive(false);
+        player.canInteract = true;
+    }
+
+
     public void HandleInput()
     {
-        checkFactoryHp();
+        // checkFactoryHp();
         if (isWorking) {
             SetCurrentItem();
             SetCorrectImage();
@@ -224,8 +245,7 @@ public class SortingManager : MonoBehaviour
         sortingPanelTransfrom.Find("FactoryDownText").gameObject.SetActive(!value);
     }
 
-    public void DisablePanel()
-    {
+    public void DisablePanel() {
         if (currentItem != null || nextItem != null || secondNextItem != null)
         {
             hud.transform.Find("SortingPanel").gameObject.SetActive(true);
@@ -233,8 +253,8 @@ public class SortingManager : MonoBehaviour
         }
         else
         {
-            hud.transform.Find("SortingPanel").gameObject.SetActive(false);
-            player.canInteract = true;
+            // Start the coroutine to disable the panel after a delay
+            StartCoroutine(DisablePanelWithDelay(0.5f)); // Adjust the delay time as needed
         }
     }
 
@@ -257,18 +277,12 @@ public class SortingManager : MonoBehaviour
     {
         if (binIndex >= 0 && binIndex < binPositions.Length)
         {
-            // Calculate the position of the target bin
             Vector3 targetPosition = binPositions[binIndex].position;
-
-            // Create a copy of the bottom rectangle
             RectTransform bottomRectCopy = Instantiate(bottomRect, transform);
-
-            // Start the animation
             StartCoroutine(MoveBottomRectToBin(bottomRectCopy, targetPosition));
         }
     }
 
-    // Coroutine to animate the movement of the bottom rectangle to the target position
     private IEnumerator MoveBottomRectToBin(RectTransform rectTransform, Vector3 targetPosition)
     {
         float duration = 0.5f; // Adjust as needed
@@ -278,17 +292,12 @@ public class SortingManager : MonoBehaviour
 
         while (elapsed < duration)
         {
-            // Interpolate position between initial and target position
             rectTransform.position = Vector3.Lerp(initialPosition, targetPosition, elapsed / duration);
-
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Ensure the rectangle reaches the exact target position
         rectTransform.position = targetPosition;
-
-        // Destroy the copy after animation is done
         Destroy(rectTransform.gameObject);
     }
 
