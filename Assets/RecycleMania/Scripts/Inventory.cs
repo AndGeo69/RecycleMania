@@ -14,7 +14,7 @@ public class Inventory : MonoBehaviour
     }
 
     [SerializeField] 
-    private int RecycledTrashRequiredToWin = 500;
+    private int RecycledTrashRequiredToWin = 150;
 
     private int TotalRecycledTrash;
 

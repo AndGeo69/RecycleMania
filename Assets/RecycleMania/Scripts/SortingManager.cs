@@ -156,7 +156,7 @@ public class SortingManager : MonoBehaviour
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
     }
 
-    private KeyCode GetKeyPerItemType(InventoryItemBase item)
+   private KeyCode GetKeyPerItemType(InventoryItemBase item)
     {
         if (item == null)
             return KeyCode.Q;
@@ -178,6 +178,44 @@ public class SortingManager : MonoBehaviour
         }
     }
 
+    private string GetSortingMessage(EItemType itemType, KeyCode pressedKey)
+    {
+        switch (itemType)
+        {
+            case EItemType.Glass:
+                if (pressedKey == KeyCode.D) return "Glass items cannot be placed into the paper recycling bin because they are made of different materials and require separate recycling processes. Glass is melted down at high temperatures, while paper is pulped and processed differently. Mixing these materials can contaminate the recycling stream, making it harder to recycle both effectively. Please place paper items in the paper recycling bin.";
+                if (pressedKey == KeyCode.W) return "Glass items cannot be placed into the plastic recycling bin because glass and plastic require different recycling processes. Glass is melted at very high temperatures, while plastic is processed differently. Mixing plastic with glass can contaminate the glass recycling stream. Please place plastic items in the plastic recycling bin.";
+                if (pressedKey == KeyCode.S) return "Glass items cannot be placed into the aluminium recycling bin because they are processed using different methods. Aluminium is melted and reformed, while glass requires a different melting process. Mixing these materials can contaminate the glass recycling stream. Please place aluminium items in the aluminium recycling bin.";
+                if (pressedKey == KeyCode.Space) return "Glass items cannot be placed into the organic recycling bin because they do not decompose like organic materials. Organic waste includes food scraps and biodegradable materials, while glass needs to be recycled through melting. Please place organic items in the organic waste bin.";
+                break;
+            case EItemType.Organic_Waste:
+                if (pressedKey == KeyCode.D) return "Organic waste items cannot be placed into the paper bin unless they are specifically labeled as compostable. Regular paper can contain inks and coatings that are not suitable for composting. It’s important to recycle paper properly to ensure it can be turned into new paper products. Please place paper items in the paper recycling bin.";
+                if (pressedKey == KeyCode.W) return "Organic waste items cannot be placed into the plastic bin because they do not decompose naturally like organic waste. Organic waste includes food scraps and other biodegradable materials, while plastic can take hundreds of years to break down. Please place plastic items in the plastic recycling bin.";
+                if (pressedKey == KeyCode.S) return "Organic waste items cannot be placed into the aluminium bin because they do not decompose naturally. Organic waste includes biodegradable materials, while aluminium is recycled through melting and reforming. Please place aluminium items in the aluminium recycling bin.";
+                if (pressedKey == KeyCode.A) return "Organic waste items cannot be placed into the Glass bin because they do not decompose like organic materials. Organic waste includes food scraps and biodegradable materials, while glass needs to be recycled through melting. Please place glass items in the glass recycling bin.";
+                break;
+            case EItemType.Aluminium:
+                if (pressedKey == KeyCode.D) return "Aluminium items cannot be placed into the paper recycling bin because they are processed in different ways. Paper is pulped and recycled into new paper products, while aluminium is melted and reformed. Mixing paper with aluminium can contaminate the aluminium recycling stream. Please place paper items in the paper recycling bin.";
+                if (pressedKey == KeyCode.W) return "Aluminium items cannot be placed into the plastic recycling bin because they require different recycling processes. Plastic is melted and reformed into new products, while aluminium is melted and reformed through a different process. Mixing plastic with aluminium can contaminate the aluminium recycling stream. Please place plastic items in the plastic recycling bin.";
+                if (pressedKey == KeyCode.Space) return "Aluminium items cannot be placed into the organice waste recycling bin because they decompose naturally, while aluminium does not. Organic waste should be composted to break down, while aluminium is melted and reformed. Please place organic items in the organic waste bin.";
+                if (pressedKey == KeyCode.A) return "Aluminium items cannot be placed into the glass recycling bin because they require different recycling processes. Glass is melted at a higher temperature, while aluminium is melted and reformed differently. Mixing glass with aluminium can contaminate the aluminium recycling stream. Please place glass items in the glass recycling bin.";
+                break;
+            case EItemType.Plastic:
+                if (pressedKey == KeyCode.D) return "Plastic items cannot be placed into the paper recycling bin because they are processed differently. Paper is pulped and recycled into new paper products, while plastic is melted and reformed. Mixing paper with plastic can contaminate the plastic recycling stream. Please place paper items in the paper recycling bin.";
+                if (pressedKey == KeyCode.S) return "Plastic items cannot be placed into the aluminium recycling bin because they require different recycling processes. Aluminium is melted and reformed, while plastic is melted and processed differently. Mixing aluminium with plastic can contaminate the plastic recycling stream. Please place aluminium items in the aluminium recycling bin.";
+                if (pressedKey == KeyCode.Space) return "Plastic items cannot be placed into the organice waste recycling bin because they decompose naturally, while plastic does not. Organic waste should be composted, while plastic is recycled through melting and reforming. Please place organic items in the organic waste bin.";
+                if (pressedKey == KeyCode.A) return "Plastic items cannot be placed into the glass recycling bin because they require different recycling processes. Glass is melted at higher temperatures, while plastic is melted and processed differently. Mixing glass with plastic can contaminate the plastic recycling stream. Please place glass items in the glass recycling bin.";
+                break;
+            case EItemType.Paper:
+                if (pressedKey == KeyCode.W) return "Plastic items cannot be placed into the paper recycling bin because they are made of different materials. Paper is pulped and turned into new paper products, while plastic is melted and reformed. Mixing plastic with paper can contaminate the paper recycling stream. Please place plastic items in the plastic recycling bin.";
+                if (pressedKey == KeyCode.S) return "Aluminium items cannot be placed into the paper recycling bin because they are made of different materials. Paper is pulped and recycled into new paper products, while aluminium is melted and reformed. Mixing aluminium with paper can contaminate the paper recycling stream. Please place aluminium items in the aluminium recycling bin.";
+                if (pressedKey == KeyCode.Space) return "Organic items cannot be placed into the paper recycling bin unless they are specifically labeled as compostable. Regular paper can contain inks and coatings that are not suitable for composting. Please place organic items in the organic waste bin.";
+                if (pressedKey == KeyCode.A) return "Glass items cannot be placed into the paper recycling bin because they are processed very differently. Paper is pulped and turned into new paper products, while glass is melted down to form new glass items. Glass in the paper stream can cause contamination and damage recycling equipment. Please place glass items in the glass recycling bin.";
+                break;
+        }
+        return "This item cannot be placed into this bin!";
+    }
+
     public void HandleItems(InventoryItemBase item)
     {
         if (currentItem == null)
@@ -185,7 +223,7 @@ public class SortingManager : MonoBehaviour
 
         KeyCode expectedKey = GetKeyPerItemType(item);
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.W) || 
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.W) ||
             Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.Space))
         {
             SortingInfoPanel.gameObject.SetActive(false);
@@ -200,10 +238,18 @@ public class SortingManager : MonoBehaviour
                 {
                     SortingInfoPanel.gameObject.SetActive(true);
                     var sortingInfoComp = SortingInfoPanel.Find("SortingInfo");
-                    sortingInfoComp.GetComponent<TMP_Text>().text =
-                        item.ItemType.ToString() + " items cannot be tossed to this trash bin!!";
+                    KeyCode pressedKey = KeyCode.None;
+
+                    if (Input.GetKeyDown(KeyCode.A)) pressedKey = KeyCode.A;
+                    if (Input.GetKeyDown(KeyCode.S)) pressedKey = KeyCode.S;
+                    if (Input.GetKeyDown(KeyCode.W)) pressedKey = KeyCode.W;
+                    if (Input.GetKeyDown(KeyCode.D)) pressedKey = KeyCode.D;
+                    if (Input.GetKeyDown(KeyCode.Space)) pressedKey = KeyCode.Space;
+
+                    string message = GetSortingMessage(item.ItemType, pressedKey);
+                    sortingInfoComp.GetComponent<TMP_Text>().text = message;
                 }
-                updateFactoryHp(-1);
+                // updateFactoryHp(-1);
                 Debug.Log("Wrong bin!");
             }
         }
@@ -264,7 +310,7 @@ public class SortingManager : MonoBehaviour
         hud.UpdateCurrency(player.currency);
         hud.UpdateRecycledTrash(player.Inventory.getTotalRecycledTrash());
 
-        player.ResetTrashCount();
+        player.IncreaseTrashCount(-1);
         hud.UpdateTrash(player.trashCount);
         SetCorrectImage();
     }
