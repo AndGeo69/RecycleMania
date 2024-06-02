@@ -63,6 +63,7 @@ public class HUD : MonoBehaviour {
 
     private void Game_Won(object sender, EventArgs e) {
         SceneManager.LoadScene("GameWonScene");
+        SimpleSoundPlayer.PlaySound("win_screen");
         Debug.Log("Game Won!!");
     }
 

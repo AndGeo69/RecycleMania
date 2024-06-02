@@ -76,6 +76,7 @@ public class Inventory : MonoBehaviour
             allItems.Add(item);
             return true;
         } else {
+            SimpleSoundPlayer.PlayWarningSound();
             ItemAdded(this, new InventoryEventArgs(item));
             return false;
         }

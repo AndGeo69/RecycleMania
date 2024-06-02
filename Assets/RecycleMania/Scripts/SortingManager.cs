@@ -19,12 +19,10 @@ public class SortingManager : MonoBehaviour
     private Transform SortingItemTemplate;
     private Transform SortingItemTemplate1;
     private Transform SortingItemTemplate2;
-    private Transform SortingInfoPanelSecondNext;
-
-    private int totalFactoryHp;
     public int currentFactoryHp;
     private Transform sortingPanelTransfrom;
     private bool isWorking;
+    private int successInARowTimes = 0;
 
     public ShakeEffect shakeEffect; // Reference to the ShakeEffect component attached to the UI GameObject
 
@@ -74,7 +72,6 @@ public class SortingManager : MonoBehaviour
             return;
         }
 
-        totalFactoryHp = currentFactoryHp =  10;     
         isWorking = true;  
     }
 
@@ -216,6 +213,24 @@ public class SortingManager : MonoBehaviour
         return "This item cannot be placed into this bin!";
     }
 
+    private void playRandomSuccSound(bool certainPlay) {
+        float chance = 0.4f;
+
+        bool play = false;
+
+        if (certainPlay) {
+            play = true;
+        } else {
+            if (UnityEngine.Random.value < chance) {
+                play = true;
+            }
+        }
+
+        if (play) {
+            SimpleSoundPlayer.PlayRandomSound(new string[]{"succ1", "succ3"});
+        }
+    }
+
     public void HandleItems(InventoryItemBase item)
     {
         if (currentItem == null)
@@ -231,10 +246,12 @@ public class SortingManager : MonoBehaviour
             {
                 OnCorrectButtonPressed((int)item.ItemType);
                 SellThisItemAndReset(item);
-                
+                successInARowTimes++;
+                playRandomSuccSound(successInARowTimes >= 3);
             }
             else
             {
+                successInARowTimes = 0;
                 if (shakeEffect.TriggerShake())
                 {
                     SortingInfoPanel.gameObject.SetActive(true);
@@ -252,6 +269,7 @@ public class SortingManager : MonoBehaviour
                 }
                 // updateFactoryHp(-1);
                 Debug.Log("Wrong bin!");
+                SimpleSoundPlayer.PlayWarningSound();
             }
         }
     }
@@ -275,24 +293,6 @@ public class SortingManager : MonoBehaviour
         }
     }
 
-    private void checkFactoryHp() {
-        if (currentFactoryHp <= 0) {
-            setPanelsActive(false);
-            isWorking = false;
-        } else {
-            setPanelsActive(true);
-            isWorking = true;
-        }
-    }
-
-    private void setPanelsActive(bool value) {
-        SortingItemTemplate.gameObject.SetActive(value);
-        SortingItemTemplate1.gameObject.SetActive(value);
-        SortingItemTemplate2.gameObject.SetActive(value);
-        sortingPanelTransfrom.Find("SortingHelpContent").gameObject.SetActive(value);
-        sortingPanelTransfrom.Find("FactoryDownText").gameObject.SetActive(!value);
-    }
-
     public void DisablePanel() {
         if (currentItem != null || nextItem != null || secondNextItem != null)
         {
@@ -301,8 +301,8 @@ public class SortingManager : MonoBehaviour
         }
         else
         {
-            // Start the coroutine to disable the panel after a delay
-            StartCoroutine(DisablePanelWithDelay(0.5f)); // Adjust the delay time as needed
+            StartCoroutine(DisablePanelWithDelay(0.5f));
+            SimpleSoundPlayer.PlaySound("succ2");
         }
     }
 
@@ -333,7 +333,7 @@ public class SortingManager : MonoBehaviour
 
     private IEnumerator MoveBottomRectToBin(RectTransform rectTransform, Vector3 targetPosition)
     {
-        float duration = 0.5f; // Adjust as needed
+        float duration = 0.5f; 
         float elapsed = 0f;
 
         Vector3 initialPosition = rectTransform.position;
@@ -349,7 +349,6 @@ public class SortingManager : MonoBehaviour
         Destroy(rectTransform.gameObject);
     }
 
-    // Call this function when the player presses the correct button
     public void OnCorrectButtonPressed(int binIndex)
     {
         AnimateBottomRectToBin(binIndex);

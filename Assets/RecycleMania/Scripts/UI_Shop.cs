@@ -44,7 +44,9 @@ public class UI_Shop : MonoBehaviour
     {
         if (!customer.ReachedMaxUpgrade(upgrade) && customer.TrySpendLeafPointsAmount(Upgrades.GetCost(upgrade))) {
             customer.BoughtUpgrade(upgrade);
+            SimpleSoundPlayer.PlaySound("buy");
         } else {
+            SimpleSoundPlayer.PlayWarningSound();
             Debug.Log("cannt afford to buy: " + upgrade);
         }
     }

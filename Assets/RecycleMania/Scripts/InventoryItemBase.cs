@@ -52,12 +52,6 @@ public class InventoryItemBase : InteractableItemBase
         get; set;
     }
 
-    // public virtual void OnUse()
-    // {
-    //     transform.localPosition = PickPosition;
-    //     transform.localEulerAngles = PickRotation;
-    // }
-
     public virtual void OnDrop()
     {
         RaycastHit hit = new RaycastHit();
@@ -72,6 +66,7 @@ public class InventoryItemBase : InteractableItemBase
 
     public virtual void OnPickup(HUD hud)
     {
+        SimpleSoundPlayer.PlayRandomSound(new string[]{"pick_up", "pick_up_2", "pick_up_3"});
         Destroy(gameObject.GetComponent<Rigidbody>());
         gameObject.SetActive(false);
         if (hud != null) {
