@@ -17,7 +17,7 @@ public class Upgrades
             default:
             case UpgradeType.CarryingCapacity:  return 100;
             case UpgradeType.MovementSpeed:     return 50;
-            case UpgradeType.PickupRange:       return 200;
+            case UpgradeType.PickupRange:       return 150;
         }
     }
 
@@ -35,7 +35,7 @@ public class Upgrades
             default:
             case UpgradeType.CarryingCapacity:  return 200;
             case UpgradeType.MovementSpeed:     return 15f;
-            case UpgradeType.PickupRange:       return 5f;
+            case UpgradeType.PickupRange:       return 8f;
         }
     }
 

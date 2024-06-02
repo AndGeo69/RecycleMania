@@ -45,7 +45,7 @@ public class Inventory : MonoBehaviour
         TotalRecycledTrash = 0;
     }
 
-    private void CheckWinCondition() {
+    public void CheckWinCondition() {
         if (getTotalRecycledTrash() >= getRecycledTrashRequiredToWin()) {
             GameWon(this, new EventArgs());
         }

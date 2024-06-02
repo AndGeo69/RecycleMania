@@ -231,6 +231,7 @@ public class SortingManager : MonoBehaviour
             {
                 OnCorrectButtonPressed((int)item.ItemType);
                 SellThisItemAndReset(item);
+                
             }
             else
             {
@@ -270,6 +271,7 @@ public class SortingManager : MonoBehaviour
             SetCorrectImage();
             HandleItems(currentItem);
             DisablePanel();
+            inventory.CheckWinCondition();
         }
     }
 

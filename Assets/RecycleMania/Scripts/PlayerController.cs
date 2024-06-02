@@ -420,24 +420,6 @@ public class PlayerController : MonoBehaviour, IShopCustomer
                
             }
 
-            // Interact with the item
-            // if (mInteractItem != null && Input.GetKeyDown(KeyCode.F))
-            // {
-            //     // Interact animation - plays event to InteractWithItem
-            //     mInteractItem.OnInteractAnimation(_animator);
-            // }
-
-            // Execute action with item
-            if (mCurrentItem != null && Input.GetMouseButtonDown(0))
-            {
-                // Dont execute click if mouse pointer is over uGUI element
-                if (!EventSystem.current.IsPointerOverGameObject())
-                {
-                    // TODO: Logic which action to execute has to come from the particular item
-                    _animator.SetTrigger("attack_1");
-                }
-            }
-
             // Get Input for axis
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
