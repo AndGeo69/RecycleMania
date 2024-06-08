@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class SimpleSoundPlayer
@@ -5,7 +7,12 @@ public static class SimpleSoundPlayer
     private static AudioSource _source;
 
     private static bool isPlaying = false;
-    public static AudioSource PlaySound(string soundName, float volume = 1f)
+
+    public static AudioSource PlaySound(string soundName, float volume = 1f) {
+        return PlaySound(soundName, false, volume);
+    }
+
+    public static AudioSource PlaySound(string soundName, bool randomize, float volume = 1f)
     {
         AudioClip soundClip = Resources.Load<AudioClip>("Sounds/" + soundName);
         if (soundClip == null)
@@ -22,16 +29,19 @@ public static class SimpleSoundPlayer
             UnityEngine.Object.DontDestroyOnLoad(_source.gameObject);
         }
 
-        _source.clip = soundClip;
+        // _source.clip = soundClip;
         _source.volume = volume;
 
+        _source.pitch = UnityEngine.Random.Range(0.8f, 1.5f);
+        // _source.volume = UnityEngine.Random.Range(0.5f, 1f); 
+
+
         if (!isPlaying) {
-            _source.Play();
+            _source.PlayOneShot(soundClip);
             isPlaying = true;
         }
 
         isPlaying = false;
-        
         return _source;
     }
 
@@ -45,6 +55,11 @@ public static class SimpleSoundPlayer
 
         int randomIndex = UnityEngine.Random.Range(0, soundNames.Length);
         return PlaySound(soundNames[randomIndex], volume);
+    }
+
+    public static AudioSource PlayRandomSound(List<String> soundNames)
+    {
+        return PlayRandomSound(soundNames.ConvertAll(i => i.ToString()).ToArray());
     }
 
     public static void PlayWarningSound() {

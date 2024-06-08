@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -194,13 +193,13 @@ public class SortingManager : MonoBehaviour
             case EItemType.Aluminium:
                 if (pressedKey == KeyCode.D) return "Aluminium items cannot be placed into the paper recycling bin because they are processed in different ways. Paper is pulped and recycled into new paper products, while aluminium is melted and reformed. Mixing paper with aluminium can contaminate the aluminium recycling stream. Please place paper items in the paper recycling bin.";
                 if (pressedKey == KeyCode.W) return "Aluminium items cannot be placed into the plastic recycling bin because they require different recycling processes. Plastic is melted and reformed into new products, while aluminium is melted and reformed through a different process. Mixing plastic with aluminium can contaminate the aluminium recycling stream. Please place plastic items in the plastic recycling bin.";
-                if (pressedKey == KeyCode.Space) return "Aluminium items cannot be placed into the organice waste recycling bin because they decompose naturally, while aluminium does not. Organic waste should be composted to break down, while aluminium is melted and reformed. Please place organic items in the organic waste bin.";
+                if (pressedKey == KeyCode.Space) return "Aluminium items cannot be placed into the organic waste recycling bin because they decompose naturally, while aluminium does not. Organic waste should be composted to break down, while aluminium is melted and reformed. Please place organic items in the organic waste bin.";
                 if (pressedKey == KeyCode.A) return "Aluminium items cannot be placed into the glass recycling bin because they require different recycling processes. Glass is melted at a higher temperature, while aluminium is melted and reformed differently. Mixing glass with aluminium can contaminate the aluminium recycling stream. Please place glass items in the glass recycling bin.";
                 break;
             case EItemType.Plastic:
                 if (pressedKey == KeyCode.D) return "Plastic items cannot be placed into the paper recycling bin because they are processed differently. Paper is pulped and recycled into new paper products, while plastic is melted and reformed. Mixing paper with plastic can contaminate the plastic recycling stream. Please place paper items in the paper recycling bin.";
                 if (pressedKey == KeyCode.S) return "Plastic items cannot be placed into the aluminium recycling bin because they require different recycling processes. Aluminium is melted and reformed, while plastic is melted and processed differently. Mixing aluminium with plastic can contaminate the plastic recycling stream. Please place aluminium items in the aluminium recycling bin.";
-                if (pressedKey == KeyCode.Space) return "Plastic items cannot be placed into the organice waste recycling bin because they decompose naturally, while plastic does not. Organic waste should be composted, while plastic is recycled through melting and reforming. Please place organic items in the organic waste bin.";
+                if (pressedKey == KeyCode.Space) return "Plastic items cannot be placed into the organic waste recycling bin because they decompose naturally, while plastic does not. Organic waste should be composted, while plastic is recycled through melting and reforming. Please place organic items in the organic waste bin.";
                 if (pressedKey == KeyCode.A) return "Plastic items cannot be placed into the glass recycling bin because they require different recycling processes. Glass is melted at higher temperatures, while plastic is melted and processed differently. Mixing glass with plastic can contaminate the plastic recycling stream. Please place glass items in the glass recycling bin.";
                 break;
             case EItemType.Paper:
@@ -214,7 +213,7 @@ public class SortingManager : MonoBehaviour
     }
 
     private void playRandomSuccSound(bool certainPlay) {
-        float chance = 0.4f;
+        float chance = 0.3f;
 
         bool play = false;
 
@@ -275,9 +274,11 @@ public class SortingManager : MonoBehaviour
     }
 
     private IEnumerator DisablePanelWithDelay(float delay) {
+        disablingPanels = true;
         yield return new WaitForSeconds(delay);
         hud.transform.Find("SortingPanel").gameObject.SetActive(false);
         player.canInteract = true;
+        disablingPanels = false;
     }
 
 
@@ -293,16 +294,21 @@ public class SortingManager : MonoBehaviour
         }
     }
 
+    private bool disablingPanels = false;
+    
     public void DisablePanel() {
         if (currentItem != null || nextItem != null || secondNextItem != null)
         {
             hud.transform.Find("SortingPanel").gameObject.SetActive(true);
             player.canInteract = false;
+            disablingPanels = false;
         }
         else
         {
-            StartCoroutine(DisablePanelWithDelay(0.5f));
-            SimpleSoundPlayer.PlaySound("succ2");
+             if (!disablingPanels) {
+                StartCoroutine(DisablePanelWithDelay(0.5f));
+                SimpleSoundPlayer.PlaySound("succ2");
+            }
         }
     }
 
